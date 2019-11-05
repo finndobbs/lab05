@@ -4,27 +4,45 @@ $username = $_POST["username"];
 
 $mysqli = new mysqli("mysql.eecs.ku.edu", "finndobbs", "ePh9Ecee", "finndobbs");
 /* check connection */
-if ($mysqli->connect_errno) {
+if ($mysqli->connect_error) {
     printf("Connect failed: %s\n", $mysqli->connect_error);
     exit();
 }
 
-$query = "SELECT user_id, FROM Users, WHERE user_id=" .$username.;
+$query = "SELECT user_id FROM Users";
 
 if ($result = $mysqli->query($query)) {
     /* the username is not taken */
-    $query = "INSERT INTO Users (" .$username. ")";
-    $mysqli->query($query));
+
+    $available = FALSE;
+    while($row = $result->fetch_assoc()) {
+        if ($row["user_id"] == $username){
+            $available = FALSE;
+            break;
+        }
+    }
+    if ($available){
+        $query = "INSERT INTO Users (user_id) VALUES (" .$username. ")";
+        if ($mysqli->query($query) === TRUE){
+            echo "success";
+        } else{
+            echo "Error: " .$query. "<br>" .$mysqli->error;
+        }
+    } else {
+        echo "username already taken";
+    }
 
     //free result
     $result->free();
-}
+}else{
+        echo "Error: " .$query. "<br>" .$mysqli->error;
+    }
+
 /* close connection */
 $mysqli->close();
 echo '<head>';
 echo "<link href='style.css' type='text/css' rel='stylesheet'/>";
 echo '</head>';
 echo "<body>";
-echo "<p>line 8</p>";
 echo "</body>";
 ?>
