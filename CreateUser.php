@@ -10,34 +10,31 @@ if ($mysqli->connect_error) {
 }
 
 $query = "SELECT user_id FROM Users";
+$result = $mysqli->query($query);
 
-if ($result = $mysqli->query($query)) {
-    /* the username is not taken */
-
-    $available = FALSE;
-    while($row = $result->fetch_assoc()) {
-        if ($row["user_id"] == $username){
-            $available = FALSE;
-            break;
-        }
+$available = TRUE;
+while($row = $result->fetch_assoc()) {
+    if ($row["user_id"] == $username){
+        $available = FALSE;
+        break;
     }
-    if ($available){
-        $query = "INSERT INTO Users (user_id) VALUES (" .$username. ")";
+}
+if ($available == TRUE){
+    if($query = "INSERT INTO Users (user_id) VALUES ('" .$username. "')"){
         if ($mysqli->query($query) === TRUE){
             echo "success";
         } else{
             echo "Error: " .$query. "<br>" .$mysqli->error;
         }
-    } else {
-        echo "username already taken";
+    }else{
+    echo "Error: " .$query. "<br>" .$mysqli->error;
     }
+} else {
+    echo "username already taken";
+}
 
-    //free result
-    $result->free();
-}else{
-        echo "Error: " .$query. "<br>" .$mysqli->error;
-    }
-
+//free result
+$result->free();
 /* close connection */
 $mysqli->close();
 echo '<head>';
