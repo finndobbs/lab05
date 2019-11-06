@@ -10,6 +10,9 @@ body {
 	font-size:12;	
 }
 
+table, th, td { 
+    border:1px solid black;
+}
 div {
 	padding: 10px;
 }
