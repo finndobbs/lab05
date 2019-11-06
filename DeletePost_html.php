@@ -5,7 +5,7 @@
 	</head>
 	<body>
 
-		<form action='ViewUserPosts.php' method='post'>
+		<form action='DeletePost.php' method='post'>
 			
 			<table>
             <th scope="col" class="col">Delete</th>
@@ -19,7 +19,7 @@
                 $result = mysqli_query($mysqli, $query) or die('Error querying database');
 
                 while ($row = mysqli_fetch_assoc($result)){
-                    echo '<tr><td><input type="checkbox" name="post" value="'.$row["post_id"].'"></td>';
+                    echo '<tr><td><input type="checkbox" name="post[]" value="'.$row["post_id"].'"></td>';
                     echo '<td>'.$row["post_id"].'</td>';
                     echo '<td>'.$row["author_id"].'</td>';
                     echo '<td>'.$row["content"].'</td></tr>';
