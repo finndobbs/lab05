@@ -1,36 +1,26 @@
-<html>
-	<head>
-		<meta charset='UTF-8'>
-		<link href='style.css' type='text/css' rel='stylesheet'/>
-	</head>
-	<body>
+<?php
 
-		<form action='ViewUserPosts.php' method='post'>
-			
-			<table>
-            <th scope="col" class="col">Delete</th>
-            <th scope="col" class="col">Post ID</th>
-            <th scope="col" class="col">User</th>
-            <th scope="col" class="col">Post</th>
+$post_ids = $_POST['post'];
 
-            <?php
-                $mysqli = mysqli_connect("mysql.eecs.ku.edu", "finndobbs", "ePh9Ecee", "finndobbs") or die('error');
-                $query = "SELECT * from Posts";
-                $result = mysqli_query($mysqli, $query) or die('Error querying database');
+echo '<style>table, th, td { border:1px solid black;}</style>';
+$mysqli = new mysqli("mysql.eecs.ku.edu", "finndobbs", "ePh9Ecee", "finndobbs");
+/* check connection */
+if ($mysqli->connect_error) {
+    printf("Connect failed: %s\n", $mysqli->connect_error);
+    exit();
+}
 
-                while ($row = mysqli_fetch_assoc($result)){
-                    echo '<tr><td><input type="checkbox" name="post" value="'.$row["post_id"].'"></td>';
-                    echo '<td>'.$row["post_id"].'</td>';
-                    echo '<td>'.$row["author_id"].'</td>';
-                    echo '<td>'.$row["content"].'</td></tr>';
+$N = count($post_ids);
+for ($i=0;$i < $N; $i++){
+    $query = "DELETE FROM Posts WHERE post_id='".$post_ids[$i]"'";
+    $result = $mysqli->query($query);
 
-                }
-                mysqli_close($mysqli);
-            ?>
-			</table>
-
-			<input type='submit'>
-			<input type='reset'>
-		</form>
-	</body>
-</html>
+echo '<table>';
+echo '<tr><th scope="col" class="col">post_id</th></tr>';
+while($row = $result->fetch_assoc()) {
+    echo '<tr>';
+    echo '<td>'.$row["post_id"].'</td>';
+    echo '</tr>';
+}
+echo '</table>';
+?>
