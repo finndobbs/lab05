@@ -18,7 +18,7 @@ echo '<tr><th scope="col" class="col">User</th><th scope="col" class="col">Posts
 while($row = $result->fetch_assoc()) {
     echo '<tr>';
     foreach ($row as $value){
-        echo '<td>'.$value.'</td>';
+        echo '<td>'.$user.'</td><td>'.$value.'</td>';
     }
     echo '</tr>';
 }
